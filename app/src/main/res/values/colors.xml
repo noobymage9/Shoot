@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="text">#373837</color>
+    <color name="primary">#45B0BB</color>
+    <color name="primary_dark">#0E9EB6</color>
+    <color name="semi_accent">#E2D290</color>
+    <color name="accent">#FFFFFF</color>
+    <color name="anti">#BB457A</color>
+    <!--color name="accent">#E48021</color-->
+
+    <color name="grey">#AAAAAA</color>
+</resources>

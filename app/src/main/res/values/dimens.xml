@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="player_selection_button_margin">10dp</dimen>
+    <dimen name="back_button_margin">20dp</dimen>
+    <dimen name="headerText">20sp</dimen>
+    <dimen name="countdown_size">60sp</dimen>
+</resources>
