@@ -1,6 +1,8 @@
 package com.shoot.engine
 
+import android.util.Log
 import com.shoot.MainActivity
+import com.shoot.engine.Main.Companion.player
 import java.io.Serializable
 import java.util.concurrent.CopyOnWriteArrayList
 
@@ -13,25 +15,38 @@ data class DynamicData(
 
     var converted = false
 
-
-    fun update(
-        bots: CopyOnWriteArrayList<Bot>?,
-        bullets: CopyOnWriteArrayList<Bullet>?,
-        position: Entity.Position?,
-        TAG: String
-    ) : DynamicData {
-        this.bots = bots
-        this.bullets = bullets
-        this.position = position
-        this.TAG = TAG
+    fun update(collection: CopyOnWriteArrayList<*>): DynamicData {
+        if (collection.size != 0)
+            when (collection.get(0)) {
+                is Bot -> {
+                    bots = CopyOnWriteArrayList()
+                    for (bot in collection) {
+                        bots!!.add((bot as Bot).clone())
+                    }
+                }
+                is Bullet -> {
+                    bullets = CopyOnWriteArrayList()
+                    for (bullet in collection) {
+                        bullets!!.add((bullet as Bullet).clone())
+                    }
+                }
+            }
         return this
     }
+
+    fun update(position: Entity.Position): DynamicData {
+        this.position = position.clone()
+        return this
+    }
+
 
     // ALWAYS INVERSE FIRST BEFORE CONVERTING
     fun inverse(): DynamicData {
         TAG = if (TAG.equals("enemy")) "player"
         else "enemy"
+
         position?.inverse()
+
         if (bots != null)
             for (bot in bots!!) bot.position.inverse()
 
@@ -66,6 +81,7 @@ data class DynamicData(
         var tempBots: CopyOnWriteArrayList<Bot>?
         var tempBullets: CopyOnWriteArrayList<Bullet>?
         val position = position?.x?.let { position?.y?.let { it1 -> Entity.Position(it, it1) } }
+
         if (bots != null) {
             tempBots = CopyOnWriteArrayList()
             for (bot in bots!!) tempBots.add(bot.clone())
@@ -79,14 +95,5 @@ data class DynamicData(
         else
             tempBullets = null
         return DynamicData(tempBots, tempBullets, position, String(TAG.toCharArray()))
-    }
-
-    fun removeBots(): DynamicData{
-        bots = null
-        return this
-    }
-    fun removeBullets(): DynamicData {
-        bullets = null
-        return this
     }
 }

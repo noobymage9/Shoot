@@ -89,6 +89,8 @@ class PlayFragment : Fragment() {
                     stopDiscovery()
                     if (!PlayFragment.host) {
                         player = Player()
+                        val playerData = Payload.fromBytes(MainActivity.serialize(player.clone().inverse().toRatio()))
+                        context?.let { Nearby.getConnectionsClient(it).sendPayload(endPointID, playerData) }
                         enemy = Enemy()
                     }
                     MainActivity.fadeOut(root.player_selection)

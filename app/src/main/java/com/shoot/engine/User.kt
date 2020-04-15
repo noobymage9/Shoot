@@ -70,7 +70,7 @@ abstract class User(var colour: String, position: Position, val TAG: String): En
     fun update(temp: DynamicData) {
         if (temp.bots != null) this.bots = temp.bots!!
         if (temp.bullets != null) this.bullets = temp.bullets!!
-        if (TAG.equals("enemy")) this.position = temp.position!!
+        this.position = temp.position!!
     }
 
 
@@ -89,10 +89,6 @@ abstract class User(var colour: String, position: Position, val TAG: String): En
     }
 
     var dynamicData = DynamicData(bots, bullets, position, TAG)
-        get() {
-            if (TAG.equals("player")) return field.update(bots, bullets, position, TAG)
-            else return field.update(bots, bullets, null, TAG)
-        }
 
     companion object{
         const val DEFAULT_INITIAL_LIFE = 3

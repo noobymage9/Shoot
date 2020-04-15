@@ -26,6 +26,7 @@ class DataTransfer : PayloadCallback() {
             val temp = payload.asBytes()?.let { MainActivity.deserialize(it) }
             Log.e("DATA", "RECEIVED")
             when (temp) {
+                is Player -> enemy.set(temp.toValue())
                 is DynamicData -> when (temp.TAG) {
                     "enemy" -> {
                         enemy.update(temp.toValue())

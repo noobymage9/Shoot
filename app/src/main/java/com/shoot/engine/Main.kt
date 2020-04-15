@@ -34,6 +34,7 @@ class Main private constructor(val playFragment: PlayFragment): Runnable {
             enemy.inverse()
         }
         while (running) {
+
             val bullets = initialiseBullets()
             val bots = initialiseBots()
             time++
@@ -103,8 +104,8 @@ class Main private constructor(val playFragment: PlayFragment): Runnable {
             if (!winner.equals("")) break
 
             if (PlayFragment.twoPlayer) {
-                val playerData = Payload.fromBytes(MainActivity.serialize(player.dynamicData.clone().inverse().toRatio()))
-                val enemyData = Payload.fromBytes(MainActivity.serialize(enemy.dynamicData.clone().inverse().toRatio()))
+                val playerData = Payload.fromBytes(MainActivity.serialize(player.dynamicData.clone().update(player.position).update(player.bots).update(player.bullets).inverse().toRatio()))
+                val enemyData = Payload.fromBytes(MainActivity.serialize(enemy.dynamicData.clone().update(enemy.position).update(enemy.bots).update(enemy.bullets).inverse().toRatio()))
                 PlayFragment.endPointID?.let {
                     Nearby.getConnectionsClient(playFragment.context!!).sendPayload(
                         it, playerData)

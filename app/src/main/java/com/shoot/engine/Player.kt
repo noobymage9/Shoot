@@ -36,7 +36,7 @@ class Player: User(colour = "#45B0BB", position = Position(MainActivity.width / 
 
     override fun reset() {
         super.reset()
-        position=  Position(MainActivity.width / 2f, 6* MainActivity.height / 8f)
+        position.reset(TAG)
     }
 
     public override fun clone(): Player{
@@ -51,32 +51,30 @@ class Player: User(colour = "#45B0BB", position = Position(MainActivity.width / 
         temp.shootRate = shootRate
         temp.spawnRate = spawnRate
         temp.initialLife = initialLife
-        temp.dynamicData = dynamicData.clone()
         temp.life = initialLife
         temp.colour = colour
-        for (bot in bots) temp.bots.add(bot.clone())
-        for (bullet in bullets) temp.bullets.add(bullet.clone())
         temp.invulnerableDuration = invulnerableDuration
+        temp.position = position
         return temp
     }
 
 
     fun inverse(): Player {
-        dynamicData.inverse()
-        update(dynamicData)
+        bulletType.movement.inverse()
+        botType.movement.inverse()
+        botBulletType.movement.inverse()
         position.inverse()
         return this
     }
 
     fun toRatio(): Player{
+
         position.toRatio()
-        dynamicData.toRatio()
         return this
     }
 
     fun toValue(): Player {
         position.toValue()
-        dynamicData.toValue()
         return this
     }
 

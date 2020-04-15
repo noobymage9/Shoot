@@ -48,8 +48,7 @@ class UserInterface @JvmOverloads constructor(
     }
 
     private fun sendToOther() {
-        val temp = player.dynamicData.clone()
-        if (!PlayFragment.host) temp.removeBots().removeBullets()
+        val temp = player.dynamicData.clone().update(player.position)
         val playerData = Payload.fromBytes(MainActivity.serialize(temp.inverse().toRatio()))
         PlayFragment.endPointID?.let {
             Nearby.getConnectionsClient(context).sendPayload(

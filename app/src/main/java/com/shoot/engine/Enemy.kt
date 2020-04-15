@@ -23,11 +23,8 @@ class Enemy : User(colour = DEFAULT_COLOR, position = DEFAULT_POSITION, TAG = TA
         shootRate = player.shootRate
         spawnRate = player.spawnRate
         initialLife = player.initialLife
-        dynamicData = player.dynamicData
         life = player.initialLife
         colour = player.colour
-        bots = player.bots
-        bullets = player.bullets
         invulnerableDuration = player.invulnerableDuration
         position = player.position
     }

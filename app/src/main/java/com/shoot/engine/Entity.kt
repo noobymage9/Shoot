@@ -19,7 +19,7 @@ abstract class Entity(var size: Float = DEFAULT_SIZE, open var position: Positio
     data class Position(var x : Float, var y : Float) : Serializable, Cloneable{
         fun inverse(): Position {
             x = MainActivity.width - x
-            y = MainActivity.width - y
+            y = MainActivity.height - y
             return this
         }
         fun reset(TAG: String) {
@@ -37,7 +37,7 @@ abstract class Entity(var size: Float = DEFAULT_SIZE, open var position: Positio
         }
         fun toValue(): Position {
             x = x * MainActivity.width
-            y = y * MainActivity.width
+            y = y * MainActivity.height
             return this
         }
         public override fun clone(): Position = Position(x, y)
