@@ -44,8 +44,9 @@ class PlayFragment : Fragment() {
     var user : User? = null
     val endpointDiscoveryCallback = object : EndpointDiscoveryCallback() {
         override fun onEndpointFound(endPointID : String, discoveredEndpointInfo : DiscoveredEndpointInfo) {
+            Log.e("DISCOVERED", discoveredEndpointInfo.endpointName)
             if (endPoints.put(endPointID, discoveredEndpointInfo.endpointName) == null && !discoveredEndpointInfo.endpointName.equals("")) {
-                (enemy_list.adapter as EnemyAdapter).enemies.add(EnemyInformation(discoveredEndpointInfo.endpointName, endPointID))
+                (enemy_list.adapter as EnemyAdapter).enemies.add(EnemyInformation(discoveredEndpointInfo.endpointName, endPointID, EnemyInformation.NEARBY))
                 (enemy_list.adapter as EnemyAdapter).notifyDataSetChanged()
             }
         }
@@ -53,7 +54,7 @@ class PlayFragment : Fragment() {
         override fun onEndpointLost(endPointID: String) {
             val name = endPoints.get(endPointID)
             endPoints.remove(endPointID)
-            (enemy_list.adapter as EnemyAdapter).enemies.remove(EnemyInformation(name!!, endPointID))
+            (enemy_list.adapter as EnemyAdapter).enemies.remove(EnemyInformation(name!!, endPointID, EnemyInformation.NEARBY))
             (enemy_list.adapter as EnemyAdapter).notifyDataSetChanged()
         }
     }
@@ -172,8 +173,8 @@ class PlayFragment : Fragment() {
             DiscoveryOptions.Builder().setStrategy(Strategy.P2P_CLUSTER).build()
         Nearby.getConnectionsClient(context!!)
             .startDiscovery(MainActivity.SERVICE_ID, endpointDiscoveryCallback, discoveryOptions)
-            .addOnSuccessListener { unused: Void? -> }
-            .addOnFailureListener { e: java.lang.Exception? -> }
+            .addOnSuccessListener { unused: Void? -> Log.e("DISCOVERY", "START DISCOVERING") }
+            .addOnFailureListener { e: java.lang.Exception? ->Log.e("DISCOVERY", "FAILED TO START DISCOVERING WITH" + e)}
     }
 
     private fun startAdvertising() {
@@ -185,8 +186,8 @@ class PlayFragment : Fragment() {
                 .startAdvertising(
                     user!!.name, MainActivity.SERVICE_ID, connectionLifecycleCallback, advertisingOptions
                 )
-                .addOnSuccessListener { unused: Void? -> }
-                .addOnFailureListener { e: Exception? -> }
+                .addOnSuccessListener { unused: Void? -> Log.e("ADVERTISING", "START ADVERTISING" + user!!.name)}
+                .addOnFailureListener { e: Exception? -> Log.e("ADVERTISING", "FAILED TO START ADVERTISING WITH" + e)}
         }
     }
 

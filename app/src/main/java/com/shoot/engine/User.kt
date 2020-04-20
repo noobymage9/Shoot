@@ -70,7 +70,7 @@ abstract class User(var colour: String, position: Position, val TAG: String): En
     fun update(temp: DynamicData) {
         if (temp.bots != null) this.bots = temp.bots!!
         if (temp.bullets != null) this.bullets = temp.bullets!!
-        this.position = temp.position!!
+        if (temp.position != null) this.position = temp.position!!
     }
 
 
@@ -88,7 +88,7 @@ abstract class User(var colour: String, position: Position, val TAG: String): En
         style = Paint.Style.FILL
     }
 
-    var dynamicData = DynamicData(bots, bullets, position, TAG)
+    var dynamicData = DynamicData(TAG = TAG)
 
     companion object{
         const val DEFAULT_INITIAL_LIFE = 3

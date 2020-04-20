@@ -15,7 +15,7 @@ import kotlin.random.Random
 class Main private constructor(val playFragment: PlayFragment): Runnable {
     var winner = ""
         get() = field
-    val FRAME_RATE : Long = 1000 / 60L
+    val FRAME_RATE : Long = 1000 / 30L
     var time = 0
         get() = field
     var done = false
@@ -94,27 +94,27 @@ class Main private constructor(val playFragment: PlayFragment): Runnable {
             remove(player.bots)
             remove(enemy.bots)
             checkVictory()
+            if (!winner.equals("")) break
+
+            if (PlayFragment.twoPlayer) {
+                val playerData = Payload.fromBytes(MainActivity.serialize(player.dynamicData.clone().update(player.bots).update(player.bullets).inverse().toRatio()))
+                val enemyData = Payload.fromBytes(MainActivity.serialize(enemy.dynamicData.clone().update(enemy.bots).update(enemy.bullets).inverse().toRatio()))
+                PlayFragment.endPointID?.let {
+                    Nearby.getConnectionsClient(playFragment.context!!).sendPayload(
+                        it, playerData)
+                }
+                PlayFragment.endPointID?.let {
+                    Nearby.getConnectionsClient(playFragment.context!!).sendPayload(
+                        it, enemyData
+                    )
+                }
+            }
             try {
                 Thread.sleep(FRAME_RATE)
             } catch (interruptedException : InterruptedException) {
                 running = false
                 done = true
                 Thread.currentThread().interrupt()
-            }
-            if (!winner.equals("")) break
-
-            if (PlayFragment.twoPlayer) {
-                val playerData = Payload.fromBytes(MainActivity.serialize(player.dynamicData.clone().update(player.position).update(player.bots).update(player.bullets).inverse().toRatio()))
-                val enemyData = Payload.fromBytes(MainActivity.serialize(enemy.dynamicData.clone().update(enemy.position).update(enemy.bots).update(enemy.bullets).inverse().toRatio()))
-                PlayFragment.endPointID?.let {
-                    Nearby.getConnectionsClient(playFragment.context!!).sendPayload(
-                        it, playerData)
-                }
-                PlayFragment.endPointID?.let {
-                   Nearby.getConnectionsClient(playFragment.context!!).sendPayload(
-                       it, enemyData)
-                }
-
             }
         }
         val differenceInTime = System.currentTimeMillis() - startTime

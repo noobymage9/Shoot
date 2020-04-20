@@ -7,9 +7,9 @@ import java.io.Serializable
 import java.util.concurrent.CopyOnWriteArrayList
 
 data class DynamicData(
-    var bots: CopyOnWriteArrayList<Bot>?,
-    var bullets: CopyOnWriteArrayList<Bullet>?,
-    var position: Entity.Position?,
+    var bots: CopyOnWriteArrayList<Bot>? = null,
+    var bullets: CopyOnWriteArrayList<Bullet>? = null,
+    var position: Entity.Position? = null,
     var TAG: String
 ) : Serializable, Cloneable {
 
